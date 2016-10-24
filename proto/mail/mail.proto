@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+service Mailing {
+	rpc SendTemplate(SendTemplateRequest) returns (SendTemplateResponse) {}
+}
+
+message Message {
+	string from = 1;
+	string fromName = 2;
+	string to = 3;
+	string toName = 4;
+}
+
+message Recipient {
+	string name = 1;
+	string email = 2;
+}
+
+message SendTemplateRequest {
+	Message message = 1;
+	string template = 2;
+	map<string, string> variables = 3;
+}
+
+message SendTemplateResponse {
+	string messageID = 1;
+}
