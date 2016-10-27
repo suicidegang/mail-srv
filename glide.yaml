@@ -1,0 +1,21 @@
+package: .
+import:
+- package: github.com/golang/protobuf
+  subpackages:
+  - /proto
+- package: github.com/hashicorp/consul
+  subpackages:
+  - /api
+- package: github.com/keighl/postmark
+- package: github.com/micro/go-micro
+  subpackages:
+  - client
+  - errors
+  - server
+- package: github.com/suicidegang/mail-srv
+  subpackages:
+  - /handler
+  - proto/mail
+- package: golang.org/x/net
+  subpackages:
+  - /context

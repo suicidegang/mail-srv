@@ -1,6 +1,7 @@
 package handler
 
 import (
+	errorsN "errors"
 	"fmt"
 	"log"
 	"strconv"
@@ -63,6 +64,10 @@ func getTemplateId(name string) (int64, error) {
 	template, _, err := Config.Get("mail/templates/"+name, nil)
 	if err != nil {
 		return 0, err
+	}
+
+	if template == nil {
+		return 0, errorsN.New("Template was not found under mail/templates")
 	}
 
 	templateID, err := strconv.Atoi(string(template.Value))
