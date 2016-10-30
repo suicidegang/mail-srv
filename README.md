@@ -1,6 +1,9 @@
-# Mailing Server
+[![Go Report Card](https://goreportcard.com/badge/github.com/suicidegang/mail-srv)](https://goreportcard.com/report/github.com/suicidegang/mail-srv)
+[![Build Status](https://travis-ci.org/suicidegang/mail-srv.svg?branch=master)](https://travis-ci.org/suicidegang/mail-srv)
 
-Mailing server is a microservice to send and track transactional emails.
+# Mail-srv
+
+Mail-srv is a microservice used to send & track emails using Postmark API. Built for Golang micro.mu
 
 ## Getting started
 
@@ -14,12 +17,12 @@ Mailing server is a microservice to send and track transactional emails.
 	$ consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul
 	```
 4. Setup config values in Consul KV
-	```
-	mail/server-token -> postmark token
-	mail/templates/test-template -> postmark id
-	```
-4. Download and start the service
 
+	```mail/server-token``` Your postmark server token.
+	
+	```mail/templates/{template-alias}``` Template aliases "KV" folder
+	
+4. Download and start the service
 	```shell
 	go get github.com/suicidegang/mail-srv
 	mail-srv
