@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"log"
+	"os"
 
 	"github.com/hashicorp/consul/api"
 	"github.com/keighl/postmark"
@@ -30,6 +32,23 @@ func main() {
 			}
 
 			handler.Client = postmark.NewClient(string(serverToken.Value), "")
+			ignoredList := []string{}
+			ignored, err := os.Open("./emails.txt")
+
+			if err != nil {
+				panic(err)
+			}
+
+			defer ignored.Close()
+			scanner := bufio.NewScanner(ignored)
+			scanner.Split(bufio.ScanLines)
+
+			for scanner.Scan() {
+				ignoredList = append(ignoredList, scanner.Text())
+			}
+
+			handler.Ignored = ignoredList
+			log.Printf("[sg.micro.srv.mail] %v ignored domains", len(handler.Ignored))
 			return nil
 		}),
 	)

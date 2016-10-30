@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 
 	consul "github.com/hashicorp/consul/api"
 	"github.com/keighl/postmark"
@@ -14,8 +15,9 @@ import (
 )
 
 var (
-	Client *postmark.Client
-	Config *consul.KV
+	Ignored []string
+	Client  *postmark.Client
+	Config  *consul.KV
 )
 
 type Mailing struct{}
@@ -25,6 +27,11 @@ func (m *Mailing) SendTemplate(ctx context.Context, req *proto.SendTemplateReque
 	from := recipient(req.Message.FromName, req.Message.From)
 	to := recipient(req.Message.ToName, req.Message.To)
 	vars := map[string]interface{}{}
+
+	if !IsSafe(req.Message.To) {
+		res.MessageID = "blacklisted"
+		return nil
+	}
 
 	for key, value := range req.Variables {
 		vars[key] = value
@@ -76,4 +83,16 @@ func getTemplateId(name string) (int64, error) {
 	}
 
 	return int64(templateID), nil
+}
+
+func IsSafe(email string) bool {
+	for _, domain := range Ignored {
+		if strings.HasSuffix(email, domain) {
+			log.Printf("[postmark] Found %s in domains blacklist.", email)
+			return false
+		}
+	}
+
+	log.Printf("[postmark] %s seems like a safe email.", email)
+	return true
 }
