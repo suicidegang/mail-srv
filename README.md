@@ -29,14 +29,23 @@ Mail-srv is a microservice used to send & track emails using Postmark API. Built
 	```
 
 ## The API
-User server implements the following RPC Methods
+Mailing server implements the following RPC Methods
 
 Mailing
 - SendTemplate
 
 ### Mailing.SendTemplate
 ```shell
-$ micro query sg.micro.srv.mail Mailing.SendTemplate '{"template": "user.signup","variables": {"base_url": "https://spartangeek.com"},"message": {"from": "pedidos@spartangeek.com", "fromName": "Lic. Alberto", "to": "fernandez14@outlook.com", "toName": "Nobody"}}'
+$ micro query sg.micro.srv.mail Mailing.SendTemplate '{
+	"template": "user.signup",
+	"variables": {"base_url": "https://spartangeek.com"},
+	"message": {
+		"from": "pedidos@spartangeek.com", 
+		"fromName": "Lic. Alberto", 
+		"to": "fernandez14@outlook.com", 
+		"toName": "Nobody"
+	}
+}'
 {
 	"messageID": "bdff86f7-75d4-46b7-88f3-93b53a5b8448"
 }
